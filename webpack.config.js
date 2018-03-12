@@ -1,55 +1,30 @@
-var path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
-    devtool: 'cheap-eval-source-map',
-    entry: {
-        main: ['whatwg-fetch', path.join(__dirname, 'js', 'app.jsx')]
-    },
+    entry: "./js/app.js",
     output: {
-        path: path.join(__dirname, 'dist'),
-        filename: '[name].bundle.js'
+        filename: "./js/out.js"
     },
-    devServer: {
-        contentBase: path.join(__dirname, "dist"),
-        compress: true,
-        port: 9000
-    },
+    watch: true,
     module: {
-        rules: [
+        loaders: [
             {
-                test: /\.jsx$/,
+                test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['es2015', 'stage-2', 'react']
-                    }
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
                 }
             },
             {
-                test: /\.(png|jpe?g|svg|gif|woff|otf)$/,
-                use: {loader: 'file-loader'}
-            },
-            {
-                test: /\.css/,
-                use: ['style-loader', 'css-loader', 'postcss-loader']
+                test: /\.css$/,
+                loader: ['style-loader', 'css-loader']
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ['css-loader', 'postcss-loader', 'sass-loader']
-                })
+                loader: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'index.html'),
-            hash: true
-        }),
-        new ExtractTextPlugin('style.css')
-    ]
+    devServer: {
+        filename: './js/out.js',
+    }
 };
