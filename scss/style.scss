@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.game-board {
+  margin:30px auto;
+  position: relative;
+  background: lightblue;
+  width: 600px;
+  height: 500px;
+  border: 2px solid lightcyan;
+}
+
+.game-tile {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: #f6da17;
+}
