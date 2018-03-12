@@ -83,17 +83,77 @@ var memoryGame = {
     tilesImg: [//tiles images
     'images/tile1.png', 'images/tile2.png', 'images/tile3.png', 'images/tile4.png', 'images/tile5.png', 'images/tile6.png', 'images/tile7.png', 'images/tile8.png', 'images/tile9.png', 'images/tile10.png'],
 
-    this: startGame = function startGame() {
+    canGet: true,
+    tilePairs: 0,
 
-        for (var i = 0; i < tileCount; i++) {
+    tileClick: function tileClick(e) {
+        if (this.canGet) {
+
+            if (!this.tilesChecked[0] || this.tilesChecked[0].dataset.index !== e.target.dataset.index) {
+                this.tilesChecked.push(e.target);
+                e.target.style.backgroundImage = 'url(' + this.tilesImg[e.target.dataset.cardType] + ')';
+            }
+
+            if (this.tilesChecked.length === 2) {
+                this.canGet = false;
+
+                if (this.tilesChecked[0].dataset.cardType === this.tilesChecked[1].dataset.cardType) {
+                    setTimeout(this.deleteTiles.bind(this), 500);
+                } else {
+                    setTimeout(this.resetTiles.bind(this), 500);
+                }
+
+                this.moveCount++;
+                this.divScore.innerText = this.moveCount;
+            }
+        }
+    },
+
+    deleteTiles: function deleteTiles() {
+        this.tilesChecked[0].remove();
+        this.tilesChecked[1].remove();
+
+        this.canGet = true;
+        this.tilesChecked = [];
+
+        this.tilePairs++;
+        if (this.tilePairs >= this.tileCount / 2) {
+            alert('Game Over!');
+        }
+    },
+
+    resetTiles: function resetTiles() {
+        this.tilesChecked[0].style.backgroundImage = 'url(images/question.png)';
+        this.tilesChecked[1].style.backgroundImage = 'url(images/question.png)';
+
+        this.tilesChecked = [];
+        this.canGet = true;
+    },
+
+    startGame: function startGame() {
+
+        this.divBoard = document.querySelector('.game-board');
+        this.divBoard.innerText = '';
+
+        this.divScore = document.querySelector('.game-score');
+        this.divScore.innerText = '';
+
+        this.tiles = [];
+        this.tilesChecked = [];
+        this.moveCount = 0;
+        this.canGet = true;
+        this.tilePairs = 0;
+
+        for (var i = 0; i < this.tileCount; i++) {
             this.tiles.push(Math.floor(i / 2));
         }
 
+        //shuffle tiles
         for (var _i = this.tileCount - 1; _i > 0; _i--) {
             var swap = Math.floor(Math.random() * _i);
-            var tmp = this.tiles[_i];
+            var temp = this.tiles[_i];
             this.tiles[_i] = this.tiles[swap];
-            this.tiles[swap] = tmp;
+            this.tiles[swap] = temp;
         }
 
         for (var _i2 = 0; _i2 < this.tileCount; _i2++) {
@@ -103,6 +163,9 @@ var memoryGame = {
 
             tile.dataset.cardType = this.tiles[_i2];
             tile.dataset.index = _i2;
+
+            tile.style.left = 5 + (tile.offsetWidth + 10) * (_i2 % this.tileOnRow) + 'px';
+            tile.style.top = 5 + (tile.offsetHeight + 10) * Math.floor(_i2 / this.tileOnRow) + 'px';
 
             tile.addEventListener('click', this.tileClick.bind(this));
         }
@@ -169,12 +232,13 @@ if(false) {
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var escape = __webpack_require__(6);
 exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n\n.game-board {\n  margin: 30px auto;\n  position: relative;\n  background: lightblue;\n  width: 600px;\n  height: 500px;\n  border: 2px solid lightcyan; }\n\n.game-tile {\n  position: absolute;\n  width: 100px;\n  height: 100px;\n  background: #f6da17; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n\n.game-board {\n  margin: 30px auto;\n  position: relative;\n  background: lightblue;\n  width: 600px;\n  height: 500px;\n  border: 2px solid lightcyan; }\n\n.game-tile {\n  position: absolute;\n  width: 100px;\n  height: 100px;\n  background: #f6da17 url(" + escape(__webpack_require__(7)) + ") center center no-repeat; }\n", ""]);
 
 // exports
 
@@ -737,6 +801,34 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,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"
 
 /***/ })
 /******/ ]);
