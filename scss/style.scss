@@ -4,18 +4,43 @@
   box-sizing: border-box;
 }
 
+
+.game {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
 .game-board {
-  margin:30px auto;
+  margin:15px auto;
   position: relative;
-  background: lightblue;
-  width: 600px;
-  height: 500px;
-  border: 2px solid lightcyan;
+  background: #cdc5ff;
+  width: 780px;
+  height: 625px;
+  border: 2px solid #937100;
+  border-radius: 5px;
 }
 
 .game-tile {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  background: #f6da17 url(../images/question.png) center center no-repeat;
+  width: 145px;
+  height: 145px;
+  background: #434343 url(../images/question.png) center center no-repeat;
+}
+
+.game-score {
+  text-align: center;
+  font-size: 25px;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+button {
+  align-self: center;
+  width: 25%;
+  margin-top: 10px;
+  font-family: 'Gloria Hallelujah', cursive;
+  border-radius: 5px;
+  outline: none;
+  background-color: #434343;
+  color: #cdc5ff;
 }

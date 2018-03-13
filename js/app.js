@@ -21,7 +21,7 @@ const memoryGame = {
         'images/tile10.png'
     ],
 
-    canGet : true,
+    canGet : true, //able to click tile
     tilePairs : 0,
 
     tileClick : function(e) {
@@ -56,7 +56,7 @@ const memoryGame = {
 
         this.tilePairs++;
         if (this.tilePairs >= this.tileCount / 2) {
-            alert('Game Over!');
+            alert('Game Over! You needed '+ this.moveCount + ' moves !');
         }
     },
 
@@ -74,7 +74,7 @@ const memoryGame = {
         this.divBoard.innerText = '';
 
         this.divScore = document.querySelector('.game-score');
-        this.divScore.innerText = '';
+        this.divScore.innerText = 0;
 
         this.tiles = [];
         this.tilesChecked = [];
