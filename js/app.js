@@ -1,4 +1,3 @@
-import "../scss/style.scss"
 
 const memoryGame = {
     tileCount: 20, //number of tiles
